@@ -25,7 +25,12 @@
                 </label>
                 <div>
                     {{ field | add_class:"border-1 p-2 rounded" }}
-                </div>    
+                </div>
+                {% for error in field.errors %}
+                    <p class="text-red-500 text-sm mt-1">
+                    {{ error }}
+                    </p>
+                {% endfor %}
             </div>
         {% endfor %}
 

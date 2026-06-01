@@ -7,13 +7,14 @@
     <h1 class="text-3xl font-bold text-gray-800">
         Rutinas
     </h1>
-
-    <a
-        href="{% url 'crear_rutina' %}"
-        class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded-lg shadow-md transition"
-    >
-        + Nueva Rutina
-    </a>
+    {% if perms.rutinas.add_rutina %}
+        <a
+            href="{% url 'crear_rutina' %}"
+            class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded-lg shadow-md transition"
+        >
+            + Nueva Rutina
+        </a>
+    {%endif%}
 
 </div>
 
@@ -76,20 +77,22 @@
                 </div>
 
                 <div class="mt-6 flex gap-3">
-
-                    <a
-                        href="{% url 'editar_rutina' rutina.id %}"
-                        class=" bg-yellow-500 hover:bg-yellow-600 text-black px-4 py-2 rounded-lg shadow transition"
-                    >
-                        Editar
-                    </a>
-
-                    <a
-                        href="{% url 'eliminar_rutina' rutina.id %}"
-                        class="hover:bg-red-600 bg-red-500 hover:bg-red-600 text-black px-4 py-2 rounded-lg shadow transition"
-                    >
-                        Eliminar
-                    </a>
+                    {% if perms.rutinas.change_rutina %}
+                        <a
+                            href="{% url 'editar_rutina' rutina.id %}"
+                            class=" bg-yellow-500 hover:bg-yellow-600 text-black px-4 py-2 rounded-lg shadow transition"
+                        >
+                            Editar
+                        </a>
+                    {%endif%}
+                    {% if perms.rutinas.delete_rutina %}
+                        <a
+                            href="{% url 'eliminar_rutina' rutina.id %}"
+                            class="hover:bg-red-600 bg-red-500 text-black px-4 py-2 rounded-lg shadow transition cursor-pointer"
+                        >
+                            Eliminar
+                        </a>
+                    {%endif%}
 
                 </div>
 
@@ -108,16 +111,16 @@
         </h2>
 
         <p class="text-gray-500 mb-6">
-            Empezá creando tu primera rutina.
+            Pedile al profe que te cargue una rutina
         </p>
-
-        <a
-            href="{% url 'crear_rutina' %}"
-            class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded-lg shadow-md transition"
-        >
-            Crear Rutina
-        </a>
-
+        {% if perms.rutinas.add_rutina %}
+            <a
+                href="{% url 'crear_rutina' %}"
+                class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded-lg shadow-md transition"
+            >
+                Crear Rutina
+            </a>
+        {% endif %}
     </div>
 
 {% endif %}

@@ -8,23 +8,20 @@ from .forms import UsuarioPersonalizadoForm, UsuarioRegistroForm, EditarUsuarioP
 # Create your views here.
 
 @login_required
-
 @permission_required('usuarios.add_usuariopersonalizado')
 def nuevo_usuario(request):
-    roles = Group.objects.all()
     if request.method == "POST":
         form = UsuarioPersonalizadoForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
-            return redirect('get_usuarios')
+            dni=form.cleaned_data["dni"]
+            if UsuarioPersonalizado.objects.filter(dni=dni).exists():
+                form.add_error("dni", "Ya existe un usuario con este dni")
+            else:
+                form.save()
+                return redirect('get_usuarios')
     else:
         form = UsuarioPersonalizadoForm()
-    
-    contexto = {
-        'form': form,
-        'roles': roles
-    }
-    return render(request, 'usuarios/nuevo_usuario.html', contexto)
+    return render(request, 'usuarios/nuevo_usuario.html', {'form': form})
 
 
 def register(request):
@@ -37,11 +34,7 @@ def register(request):
     else:
         form = UsuarioRegistroForm()
 
-    return render(
-        request,
-        'usuarios/register.html',
-        {'form': form}
-    )
+    return render(request,'usuarios/register.html',{'form': form})
 
 
 @login_required

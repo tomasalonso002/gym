@@ -45,17 +45,17 @@
                             Rutinas
                         </a>
 
-                        {% if perms.usuarios.view_users %}
+                        {% if perms.usuarios.view_usuariopersonalizado %}
                         <a href="{% url 'get_usuarios' %}" class="text-gray-600 hover:text-indigo-600 transition">
                             Usuarios
                         </a>
                         {%endif%}
-                        {% if perms.usuarios.add_users%}
+                        {% if perms.usuarios.add_usuariopersonalizado%}
                         <a href="{% url 'nuevo_usuario' %}" class="text-gray-600 hover:text-indigo-600 transition">
                             + Usuario
                         </a>
                         {%endif%}
-                        {% if perms.consultas.view_consultas%}
+                        {% if perms.inicio.view_consultas%}
                         <a href="{% url 'get_consultas' %}" class="text-gray-600 hover:text-indigo-600 transition">
                             Buzón Consultas
                         </a>

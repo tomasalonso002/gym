@@ -56,6 +56,7 @@ def borrar_usuario(request, id):
 
 
 @login_required
+@permission_required('usuarios.change_usuariopersonalizado')
 def editar_usuario(request, id):
     usuario = get_object_or_404(UsuarioPersonalizado, id=id)
     if request.method == 'POST':

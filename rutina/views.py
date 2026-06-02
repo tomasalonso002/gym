@@ -11,7 +11,7 @@ def rutinas(request):
 
 
 @login_required
-@permission_required('rutinas.add_rutina')
+@permission_required('rutina.add_rutina')
 def crear_rutina(request):
     if request.method == 'POST':
         form = RutinaForm(request.POST)
@@ -25,7 +25,7 @@ def crear_rutina(request):
 
 
 @login_required
-@permission_required('rutinas.change_rutina')
+@permission_required('rutina.change_rutina')
 def editar_rutina(request, id):
     rutina = get_object_or_404(Rutina, id=id)
 
@@ -41,7 +41,7 @@ def editar_rutina(request, id):
 
 
 @login_required
-@permission_required('rutinas.delete_rutina')
+@permission_required('rutina.delete_rutina')
 def eliminar_rutina(request, id):
     rutina = get_object_or_404(Rutina, id=id)
     if request.method == 'POST':

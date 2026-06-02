@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from .forms import ConsultasForm
 from .models import Consultas
 
@@ -9,6 +9,7 @@ def inicio(request):
 
 
 @login_required
+@permission_required('inicio.view_consultas')
 def get_consultas(request):
     consultas = Consultas.objects.filter(is_active=True).order_by("-id")
     return render(request,'inicio/get_consultas.html',{"consultas":consultas})
@@ -25,6 +26,7 @@ def nueva_consulta(request):
     return render(request, "inicio/nueva_consulta.html", {"form":form})
 
 @login_required
+@permission_required('inicio.delete_consultas')
 def borrar_consulta(request,id):
     consulta = get_object_or_404(Consultas, id = id)
     if request.method =="POST":

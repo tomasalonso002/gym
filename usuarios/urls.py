@@ -8,4 +8,9 @@ urlpatterns = [
     path('editar_usuario/<int:id>/', views.editar_usuario, name='editar_usuario'),
     path('register/', views.register, name='register'),
 
+    #------- class ased views
+    path("cbv/", views.get_usuarios.as_view()),
+    path("cbv/nueva",views.nuevo_usuario.as_view()),
+    path("cbv/editar/<int:pk>/", views.editar_usuario.as_view()),
+
 ]

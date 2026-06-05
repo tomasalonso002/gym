@@ -34,3 +34,7 @@ def borrar_consulta(request,id):
         consulta.save()
         return redirect('get_consultas')
     return render(request,'inicio/get_consultas.html')
+
+@login_required
+def perfil(request):
+    return render(request, 'inicio/perfil.html')

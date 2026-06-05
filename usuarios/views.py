@@ -67,3 +67,35 @@ def editar_usuario(request, id):
     else:
         form = EditarUsuarioPersonalizadoForm(instance=usuario)
     return render(request, 'usuarios/editar_usuario.html', {"form": form})
+
+
+
+
+#----Vistas basadas en clase-------
+
+from django.views.generic import ListView,UpdateView,DeleteView, CreateView
+from django.urls import reverse_lazy
+
+class get_usuarios(ListView): #Get all usuarios
+        model = UsuarioPersonalizado
+        template_name = 'usuarios/get_usuarios.html'
+        context_object_name='usuarios' #NOmbre de los datos en el template
+
+#Get usuario by id: DetailView
+
+
+class editar_usuario(UpdateView):
+    model=UsuarioPersonalizado
+    template_name = 'usuarios/editar_usuario.html'
+    form_class = EditarUsuarioPersonalizadoForm
+    success_url =  reverse_lazy('get_usuarios')
+    
+class borrar_usuario(DeleteView):
+    model = UsuarioPersonalizado
+    template_name =   'usuarios/get_usuarios.html'
+    success_url= reverse_lazy('get_usuarios')
+
+class nuevo_usuario(CreateView):
+    model = UsuarioPersonalizado
+    form_class= UsuarioPersonalizadoForm
+    template_name = 'usuarios/nuevo_usuario.html'

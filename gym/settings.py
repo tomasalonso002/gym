@@ -24,11 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-hdraqv@5^tc0&9gk&!m6_#%hn-fr6&@kie_9%&0h%%zyjn1f6='
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DEBUG", "False") == "True" #Esto es de render
-
+DEBUG = True
 ALLOWED_HOSTS = []
 
-SECRET_KEY = os.environ.get("SECRET_KEY") #Esto es de render
 
 # Application definition
 
@@ -52,7 +50,6 @@ TAILWIND_APP_NAME = 'theme'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware', #Esto es de render
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -128,16 +125,13 @@ USE_I18N = True
 
 USE_TZ = True
 
-ALLOWED_HOSTS = [".onrender.com"] #Esto es de render 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = '/static/' #Esto es de render
-STATIC_ROOT = BASE_DIR / 'staticfiles' #Esto es de render
+STATIC_URL = 'static/'
 
 #Esto es para configurar donde se van a almacenar la imagenes
 MEDIA_URL ='/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage" #Esto es de render

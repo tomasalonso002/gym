@@ -10,4 +10,4 @@ class PlanForm(forms.ModelForm):
 class PagoForm(forms.ModelForm):
     class Meta:
         model= Pago
-        fields = ['metodo', 'comprobante']
+        fields = ['comprobante']

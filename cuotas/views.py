@@ -25,7 +25,6 @@ def crear_siguiente_cuota(cuota):
     )
 
 @permission_required('usuarios.change_usuariopersonalizado')
-
 @login_required
 def pagar_cuota(request, id):
     cuota = get_object_or_404(Cuota, id=id, usuario=cuota.usuario)
@@ -102,6 +101,7 @@ def subir_comprobante(request, cuota_id):
         if form.is_valid():
             pago = form.save(commit=False)
             pago.cuota = cuota
+            pago.metodo = 'transferencia'
             pago.estado = 'pendiente_revision'
             pago.save()
             return redirect('cuotas')

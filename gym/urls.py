@@ -20,12 +20,23 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+from django.contrib.auth import views as auth_views
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('usuarios/', include('usuarios.urls')),
     path('', include('inicio.urls')),
+    path('cuotas/', include('cuotas.urls')),
     path('accounts/', include("django.contrib.auth.urls")),
-    path('rutina/', include('rutina.urls'))
+    path('rutina/', include('rutina.urls')),
+    path('empleado/', include('pago_sueldo.urls')),
+    path('analisis/', include('analisis.urls')),
+    path('noticias/', include('noticias.urls')),
+    #Cambiar clave
+    path('cambiar-clave/',auth_views.PasswordChangeView.as_view(template_name='registration/cambiar_clave.html'),name='password_change'),
+    path('cambiar-clave/exito/',auth_views.PasswordChangeDoneView.as_view(template_name='registration/cambiar_clave_ok.html'),name='password_change_done'),
+    #Rountes de autenticacion
+    path('',include('autenticacion.urls'))
 ]
 
 if settings.DEBUG:

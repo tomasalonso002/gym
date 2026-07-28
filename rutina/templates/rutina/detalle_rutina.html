@@ -1,0 +1,28 @@
+{% extends 'usuarios/base.html' %}
+{% load widget_tweaks %}
+
+{% block body %}
+
+<a href="{% url 'perfil' user.id %}" class="text-blue-600 hover:underline">
+    Volver
+</a>
+
+<div class="w-full max-w-6xl mx-auto mt-10 bg-white p-6 rounded-2xl shadow-lg border">
+
+    <h1 class="text-3xl md:text-4xl font-semibold text-center mb-6">
+        {{ rutina.nombre }}
+    </h1>
+
+    {% if rutina.archivo %}
+        <div class="flex justify-center">
+            <img
+                src="{{ rutina.archivo.url }}"
+                alt="{{ rutina.nombre }}"
+                class="w-full h-auto max-h-[80vh] object-contain rounded-xl border border-gray-300"
+            >
+        </div>
+    {% endif %}
+
+</div>
+
+{% endblock %}

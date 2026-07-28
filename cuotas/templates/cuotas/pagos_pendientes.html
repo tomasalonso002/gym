@@ -1,0 +1,51 @@
+{% extends 'usuarios/base.html' %}
+
+{% block body %}
+
+<div class="max-w-4xl mx-auto mt-10">
+
+    <h1 class="text-3xl font-bold mb-6">
+        Pagos pendientes
+    </h1>
+
+    {% if pagos %}
+        {% for pago in pagos %}
+
+            <div class="border p-4 rounded shadow mb-4">
+
+                <p><strong>Usuario:</strong> {{ pago.cuota.usuario }}</p>
+                <p><strong>Plan:</strong> {{ pago.cuota.plan.nombre }}</p>
+                <p><strong>Monto:</strong> ${{ pago.cuota.monto }}</p>
+                <p><strong>Método:</strong> {{ pago.metodo }}</p>
+
+                {% if pago.comprobante %}
+                    <p>
+                        <a href="{{ pago.comprobante.url }}" target="_blank">
+                            Ver comprobante
+                        </a>
+                    </p>
+                {% endif %}
+
+                <p><strong>Estado:</strong> {{ pago.estado }}</p>
+
+                <div style="margin-top:10px;">
+                    <a href="{% url 'aprobar_pago' pago.id %}"
+                       style="padding:8px 12px; background:green; color:white; border-radius:5px;">
+                        Aprobar
+                    </a>
+
+                    <a href="{% url 'rechazar_pago' pago.id %}"
+                       style="padding:8px 12px; background:red; color:white; border-radius:5px; margin-left:10px;">
+                        Rechazar
+                    </a>
+                </div>
+            </div>
+
+        {% endfor %}
+    {% else %}
+        <p>No hay pagos pendientes.</p>
+    {% endif %}
+
+</div>
+
+{% endblock %}

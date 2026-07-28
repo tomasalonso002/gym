@@ -1,7 +1,12 @@
 from django import forms
-from .models import Rutina, CategoriaRutina
+from .models import Rutina,RutinaPersonalizada
 
 class RutinaForm(forms.ModelForm):
     class Meta:
         model = Rutina
-        fields = ['nombre', 'categoria', 'descripcion']
+        fields = ['nombre', 'archivo']
+
+class RutinaPersonalizadaForm(forms.ModelForm):
+    class Meta:
+        model = RutinaPersonalizada
+        fields = ['nombre', 'archivo']

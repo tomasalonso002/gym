@@ -2,7 +2,32 @@
 {% load widget_tweaks %} <!--Se usa para poder aplicar style a los objetos-->
 
 {% block body %}
-<h1 >USUARIOS</h1>
+<h1 class="text-4xl font-semibold text-center" >USUARIOS</h1>
+
+<div class="pt-6 flex justify-between ">
+    {% if user.groups.all.0.id == 4 or user.username == 'admin' %}
+    <a href="{% url 'nuevo_usuario' %}" class="text-zinc-900/90 bg-yellow-500 hover:bg-yellow-400 p-2 rounded border font-semibold">
+        Añadir Usuario
+    </a>
+    
+    <a href="{% url 'pagos_pendientes' %}" class="text-zinc-900/90 bg-red-500 hover:bg-red-400 p-2 rounded border font-semibold">
+        Pagos pendientes
+    </a>
+    
+    <a href="{% url 'nuevo_plan' %}" class="text-zinc-900/90 bg-green-500 hover:bg-green-400 p-2 rounded border font-semibold">
+        Nuevo Plan
+    </a>
+    {%endif%}
+</div>
+
+<div class="items-center pt-5">
+    <form method="GET">
+        <input type="text" name="q" class="border p-1 rounded w-100" placeholder="Nombre de usuario">
+        <button type="submit" class="p-2 bg-blue-600 font-semibold rounded text-zinc-100 hover:bg-blue-800 cursor-pointer" >Buscar</button>
+        <a href="{% url 'get_usuarios' %}" class=" p-2 bg-green-600 font-semibold rounded text-zinc-100 hover:bg-green-800 cursor-pointer h-100">Limpiar</a>
+    </form>
+</div>
+
 <table class="border-collapse border border-black mx-auto mt-10 p-6">
     <thead>
         <tr>
@@ -13,37 +38,59 @@
             <th class="border border-black p-2">Email</th>
             <th class="border border-black p-2">Telefono</th>
             <th class="border border-black p-2">Foto</th>
-            <th class="border border-black p-2">Acciones</th>
+            <th class="border border-black p-2"> + Rutina</th>
+            {% if user.groups.all.0.id == 4 or user.username == 'admin' %}
+                <th class="border border-black p-2">Acciones</th>
+                <th class="border border-black p-2">Pagar cuota</th>
+            {% endif%}
         </tr>
     </thead>
-    <tbody>
-        {% for usuario in usuarios %}
-        <tr>
-            <td  class="border border-black p-2">{{usuario.username}}</td>
-            <td  class="border border-black p-2">{{usuario.first_name}}</td>
-            <td  class="border border-black p-2">{{usuario.last_name}}</td>
-            <td  class="border border-black p-2">{{usuario.dni}}</td>
-            <td  class="border border-black p-2">{{usuario.email}}</td>
-            <td  class="border border-black p-2">{{usuario.telefono}}</td>
-            <td  class="border border-black p-2">
-                {% if usuario.foto_perfil %}
-                    <img src="{{usuario.foto_perfil.url}}" alt="imagen {{usuario.foto_perfil}}" width="100px">
-                {%else%}
-                    Sin foto
+<tbody>
+    {% for usuario in usuarios %}
+    <tr>
+        <td class="border border-black p-2">{{usuario.username}}</td>
+        <td class="border border-black p-2">{{usuario.first_name}}</td>
+        <td class="border border-black p-2">{{usuario.last_name}}</td>
+        <td class="border border-black p-2">{{usuario.dni}}</td>
+        <td class="border border-black p-2">{{usuario.email}}</td>
+        <td class="border border-black p-2">{{usuario.telefono}}</td>
+        <td class="border border-black p-2">
+            {% if usuario.foto_perfil %}
+                <img src="{{usuario.foto_perfil.url}}" alt="imagen {{usuario.foto_perfil}}" width="100">
+            {% else %}
+                Sin foto
+            {% endif %}
+        </td>
+        <td class="border border-black p-2 min-w-31">
+            <a href="{% url 'crear_rutina_personalizada' usuario.id %}" class="p-2 bg-green-500 rounded text-white hover:bg-green-700 cursor-pointer ">
+                Crear Rutina
+            </a>
+        </td>
+        {% if user.groups.all.0.id == 4 or user.username == 'admin' %}
+            <td class="border border-black p-2" >
+                <div class="flex gap-2">
+                    <a href="{% url 'editar_usuario' usuario.id %}" class="p-2 bg-blue-500 rounded text-white hover:bg-blue-700"
+                    >
+                        Editar
+                    </a>
+
+                    <a href="{% url 'borrar_usuario' usuario.id %}" class="p-2 bg-red-500 rounded text-white hover:bg-red-700">
+                        Borrar
+                    </a>
+                </div>
+            </td>
+            <td class="border border-black p-2 min-w-31">
+                {% if usuario.cuota_actual %}
+                <a href="{% url 'detalle_pago_cuota' usuario.id %}" class="p-2 bg-green-500 rounded text-white hover:bg-green-700 cursor-pointer ">
+                    Pagar cuota
+                </a>
+                {% else %}
+                    Sin Cuota
                 {% endif %}
             </td>
-            <td class="p-5 flex border">
-                 <a class="p-2 bg-blue-500 rounded text-white cursor-pointer hover:bg-blue-700 mx-1" href="{%url 'editar_usuario' usuario.id %}">Editar</a>
-                <form action="{% url 'borrar_usuario' usuario.id %}" method="post">
-                        {% csrf_token %}
-                        <button  class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded cursor-pointer">Borrar</button>
-                </form>
-            </td>
-        </tr>
-    </tbody>
+        {% endif %}
+    </tr>
     {% endfor %}
+</tbody>
 </table>
-
-
-    <p>{{usuario.username}}</p>
 {% endblock %}

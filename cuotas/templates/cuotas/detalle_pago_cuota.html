@@ -1,0 +1,41 @@
+{% extends 'usuarios/base.html' %}
+
+{% block body %}
+
+<div class="max-w-3xl mx-auto mt-10">
+
+    <h1 class="text-3xl font-bold mb-6">
+        Mis Cuotas
+    </h1>
+    {% if cuotas %}
+    {% for cuota in cuotas %}
+            <div class="border rounded p-4 mb-4 shadow">
+                <p><strong>Nombre:</strong> {{ cuota.plan.nombre }}</p>
+                <p><strong>Monto:</strong> ${{ cuota.monto }}</p>
+                <p><strong>Inicio:</strong> {{ cuota.fecha_inicio }}</p>
+                <p><strong>Vencimiento:</strong> {{ cuota.fecha_vencimiento }}</p>
+                <p>
+                    <strong>Estado:</strong>
+                    {% if cuota.estado == 'pagada' %}
+                        <span style="color:green;">Pagada ✔</span>
+                    {% else %}
+                        <span style="color:orange;">Pendiente ⏳</span>
+                    {% endif %}
+                </p>
+                <div class="pt-2">
+                        {% if cuota.estado != 'pagada' %}
+                        <a href="{% url 'pagar_cuota_admin' cuota.id %}"
+                        style="padding:8px 12px; background:green; color:white; border-radius:5px;">
+                        Pagar cuota
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No tenés cuotas registradas.</p>
+    {% endif %}
+
+</div>
+
+{% endblock %}

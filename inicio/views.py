@@ -2,7 +2,11 @@ from django.shortcuts import render,redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, permission_required
 from .forms import ConsultasForm
 from .models import Consultas
+from rutina.models import RutinaPersonalizada
 
+
+
+from usuarios.models import UsuarioPersonalizado
 # Create your views here.
 def inicio(request):
     return render(request, "inicio/index.html")
@@ -36,5 +40,7 @@ def borrar_consulta(request,id):
     return render(request,'inicio/get_consultas.html')
 
 @login_required
-def perfil(request):
-    return render(request, 'inicio/perfil.html')
+def perfil(request,id):
+    print(request.user.get_all_permissions())
+    rutinas = RutinaPersonalizada.objects.filter(usuario=id).order_by("-id")
+    return render(request, 'inicio/perfil.html', {'rutinas':rutinas})

@@ -1,0 +1,71 @@
+{% extends 'usuarios/base.html' %}
+{% load widget_tweaks %} <!--Se usa para poder aplicar style a los objetos-->
+
+{% block body %}
+<h1 class="text-4xl font-semibold text-center" >EMPLEADOS</h1>
+
+{% if perms.usuarios.add_usuariopersonalizado%}
+    <a href="{% url 'nuevo_empleado' %}" class="text-zinc-900/90 bg-yellow-500 hover:bg-yellow-400 p-2 rounded border font-semibold">
+        Añadir Empleado
+    </a>
+{%endif%}
+
+<table class="border-collapse border border-black mx-auto mt-10 p-6">
+    <thead>
+        <tr>
+            <th class="border border-black p-2">Username</th>
+            <th class="border border-black p-2">Nombre</th>
+            <th class="border border-black p-2">Apellido</th>
+            <th class="border border-black p-2">DNI</th>
+            <th class="border border-black p-2">Email</th>
+            <th class="border border-black p-2">Telefono</th>
+            <th class="border border-black p-2">Foto</th>
+            <th class="border border-black p-2">Cargar Horas</th>
+            <th class="border border-black p-2">Acciones</th>
+            <th class="border border-black p-2">Valor Hora</th>
+        </tr>
+    </thead>
+<tbody>
+    {% for usuario in usuarios %}
+    <tr>
+        <td class="border border-black p-2">{{usuario.username}}</td>
+        <td class="border border-black p-2">{{usuario.first_name}}</td>
+        <td class="border border-black p-2">{{usuario.last_name}}</td>
+        <td class="border border-black p-2">{{usuario.dni}}</td>
+        <td class="border border-black p-2">{{usuario.email}}</td>
+        <td class="border border-black p-2">{{usuario.telefono}}</td>
+        <td class="border border-black p-2">
+            {% if usuario.foto_perfil %}
+                <img src="{{usuario.foto_perfil.url}}" alt="imagen {{usuario.foto_perfil}}" width="100">
+            {% else %}
+                Sin foto
+            {% endif %}
+        </td>
+        
+        <td>
+            <a href="{% url 'carga_horaria' usuario.id %}" class="bg-green-500 hover:bg-green-700 cursor-pointer text-white rounded p-2 flex m-2">
+                Carga Horaria
+            </a>
+        </td>
+        
+        <td class="border border-black p-2">
+            <div class="flex gap-2">
+                <a class="p-2 bg-blue-500 rounded text-white hover:bg-blue-700"
+                   href="{% url 'editar_usuario' usuario.id %}">
+                    Editar
+                </a>
+                <a href="{% url 'borrar_usuario' usuario.id %}" class="p-2 bg-red-500 rounded text-white hover:bg-red-700">
+                    Borrar
+                </a>
+            </div>
+        </td>
+        <td class="" >
+            <a href="{% url 'sueldo_hora' usuario.id %}" class="bg-green-500 hover:bg-green-700 cursor-pointer text-white rounded p-2 flex m-2 ">
+                Ver Valor
+            </a>
+        </td>
+    </tr>
+    {% endfor %}
+</tbody>
+</table>
+{% endblock %}

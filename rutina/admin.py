@@ -1,7 +1,7 @@
 from django.contrib import admin
-from .models import Rutina, CategoriaRutina
+from .models import Rutina, RutinaPersonalizada
 
 # Register your models here.
 
-admin.site.register(CategoriaRutina)
 admin.site.register(Rutina)
+admin.site.register(RutinaPersonalizada)

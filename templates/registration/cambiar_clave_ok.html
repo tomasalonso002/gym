@@ -1,0 +1,32 @@
+{% extends 'usuarios/base.html' %}
+
+{% block body %}
+
+<div class="flex justify-center items-center min-h-[70vh]">
+
+    <div class="bg-white shadow-lg rounded-2xl p-8 max-w-md w-full border border-gray-200 text-center">
+
+        <div class="mb-6">
+            <div class="text-6xl mb-3">✅</div>
+
+            <h1 class="text-3xl font-bold text-green-600">
+                Contraseña actualizada
+            </h1>
+
+            <p class="text-gray-500 mt-3">
+                Tu contraseña fue modificada correctamente.
+            </p>
+        </div>
+
+        <a
+            href="{% url 'perfil' user.id %}"
+            class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-3 rounded-xl transition duration-200 shadow-sm"
+        >
+            Volver al perfil
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

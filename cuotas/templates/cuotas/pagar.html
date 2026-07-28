@@ -1,0 +1,30 @@
+{% extends 'usuarios/base.html' %}
+
+{% block body %}
+
+<div class="max-w-xl mx-auto mt-10 border p-6 rounded shadow">
+
+    <h2 class="text-2xl font-bold mb-4">
+        Subir comprobante de pago
+    </h2>
+
+    <p><strong>Plan:</strong> {{ cuota.plan.nombre }}</p>
+    <p><strong>Monto:</strong> ${{ cuota.monto }}</p>
+    <p><strong>Vencimiento:</strong> {{ cuota.fecha_vencimiento }}</p>
+
+    <hr class="my-4">
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button type="submit"
+                style="margin-top:10px; padding:10px 15px; background:green; color:white; border:none; border-radius:6px;">
+            Enviar comprobante
+        </button>
+    </form>
+
+</div>
+
+{% endblock %}

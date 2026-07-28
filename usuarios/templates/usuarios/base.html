@@ -27,74 +27,198 @@
 
 <body class="bg-gray-50 text-gray-800 antialiased min-h-screen flex flex-col">
 
-    <nav class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16 items-center">
+<nav class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
-                <div class="flex-shrink: 0">
-                    <a href="{% url 'inicio' %}" class="text-xl font-semibold tracking-tight text-gray-900 hover:text-gray-600 transition">
-                        Plennus<span class="text-indigo-600">.</span>
+        <div class="flex justify-between items-center h-16">
+
+            <!-- Logo -->
+            <div class="shrink-0">
+                <a href="{% url 'inicio' %}" class="text-xl font-semibold tracking-tight text-gray-900 hover:text-gray-600 transition">
+                    Plennus<span class="text-indigo-600"></span>
+                </a>
+            </div>
+
+            <!-- Menú escritorio -->
+            <div class="hidden md:flex items-center space-x-6 text-sm font-medium">
+
+                {% if user.is_authenticated %}
+
+                    <a href="{% url 'perfil' user.id %}" class="text-gray-600 hover:text-indigo-600 transition hover:font-semibold">
+                        Perfil
                     </a>
-                </div>
 
-                <div class="flex items-center space-x-6 text-sm font-medium">
+                    <a href="{% url 'rutinas' %}" class="text-gray-600 hover:text-indigo-600 transition hover:font-semibold">
+                        Rutinas
+                    </a>
 
-                    {% if user.is_authenticated %}
-                        <a href="{% url 'perfil' %}">
-                            Perfil
-                        </a>
-                        <a href="{% url 'rutinas' %}" class="text-gray-600 hover:text-indigo-600 transition">
-                            Rutinas
-                        </a>
+                    <a href="{% url 'noticias' %}" class="text-gray-600 hover:text-indigo-600 transition hover:font-semibold">
+                        Noticias
+                    </a>
 
-                        {% if perms.usuarios.view_usuariopersonalizado %}
-                        <a href="{% url 'get_usuarios' %}" class="text-gray-600 hover:text-indigo-600 transition">
+                    {% if perms.usuarios.view_usuariopersonalizado %}
+                        <a href="{% url 'get_usuarios' %}" class="text-gray-600 hover:text-indigo-600 transition hover:font-semibold">
                             Usuarios
                         </a>
-                        {%endif%}
-                        {% if perms.usuarios.add_usuariopersonalizado%}
-                        <a href="{% url 'nuevo_usuario' %}" class="text-gray-600 hover:text-indigo-600 transition">
-                            + Usuario
-                        </a>
-                        {%endif%}
-                        {% if perms.inicio.view_consultas%}
-                        <a href="{% url 'get_consultas' %}" class="text-gray-600 hover:text-indigo-600 transition">
-                            Buzón Consultas
-                        </a>
-                        {%endif%}
-
-                        <form method="post" action="{% url 'logout' %}" class="inline m-0">
-                            {% csrf_token %}
-                            <button type="submit" class="bg-red-500 hover:bg-red-600 cursor-pointer text-white font-medium py-2 px-4 rounded-lg transition shadow-sm">
-                                Logout
-                            </button>
-                        </form>
-
-                    {% else %}
-                        <a href="{% url 'inicio' %}" class="text-gray-600 hover:text-gray-900 transition">
-                            Inicio
-                        </a>
-
-                        <a href="{% url 'nueva_consulta' %}" class="text-gray-600 hover:text-gray-900 transition">
-                            Consultas
-                        </a>
-
-                        <a href="{% url 'login' %}" class="bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition shadow-sm">
-                            Iniciar Sesión
+                    {% endif %}
+                    {% if user.groups.all.0.id == 4 or user.username == 'admin' %}
+                        <a href="{% url 'get_empleados' %}" class="text-gray-600 hover:text-indigo-600 transition hover:font-semibold">
+                            Empleados
                         </a>
                     {% endif %}
 
-                </div>
+                    {% if perms.inicio.view_consultas %}
+                        <a href="{% url 'get_consultas' %}" class="text-gray-600 hover:text-indigo-600 transition hover:font-semibold">
+                            Buzón Consultas
+                        </a>
+                    {% endif %}
+                    {% if user.groups.all.0.id == 4 or user.username == 'admin' %}
+                    <a href="{% url 'analisis' %}" class="block px-6 py-3 hover:bg-gray-100">
+                        Analisis
+                    </a>
+                    {% endif %}
+
+                    <form method="post" action="{% url 'logout' %}" class="inline">
+                        {% csrf_token %}
+                        <button
+                            type="submit"
+                            class="bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded-lg transition shadow-sm cursor-pointer">
+                            Logout
+                        </button>
+                    </form>
+
+                {% else %}
+
+                    <a href="{% url 'inicio' %}" class="text-gray-600 hover:text-gray-900 transition">
+                        Inicio
+                    </a>
+
+                    <a href="{% url 'nueva_consulta' %}" class="text-gray-600 hover:text-gray-900 transition">
+                        Consultas
+                    </a>
+
+                    <a href="{% url 'login' %}" class="bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition shadow-sm">
+                        Iniciar Sesión
+                    </a>
+
+                {% endif %}
 
             </div>
-        </div>
-    </nav>
 
-    <main class="flex-grow:1 max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10">
+            <!-- Botón hamburguesa -->
+            <button id="menu-btn" class="md:hidden text-gray-700 focus:outline-none">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     class="w-7 h-7"
+                     fill="none"
+                     viewBox="0 0 24 24"
+                     stroke="currentColor">
+                    <path stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- Menú móvil -->
+    <div id="mobile-menu" class="hidden md:hidden border-t border-gray-200 bg-white">
+
+        {% if user.is_authenticated %}
+
+            <a href="{% url 'perfil' user.id %}"
+               class="block px-6 py-3 hover:bg-gray-100">
+                Perfil
+            </a>
+
+            <a href="{% url 'rutinas' %}"
+               class="block px-6 py-3 hover:bg-gray-100">
+                Rutinas
+            </a>
+
+            <a href="{% url 'noticias' %}"
+               class="block px-6 py-3 hover:bg-gray-100">
+                Noticias
+            </a>
+
+            {% if perms.usuarios.view_usuariopersonalizado %}
+
+                <a href="{% url 'get_usuarios' %}"
+                   class="block px-6 py-3 hover:bg-gray-100">
+                    Usuarios
+                </a>
+
+                <a href="{% url 'get_empleados' %}"
+                   class="block px-6 py-3 hover:bg-gray-100">
+                    Empleados
+                </a>
+                
+                
+            {% endif %}
+
+            {% if perms.inicio.view_consultas %}
+
+                <a href="{% url 'get_consultas' %}"
+                   class="block px-6 py-3 hover:bg-gray-100">
+                    Buzón Consultas
+                </a>
+
+            {% endif %}
+
+            {% if user.groups.all.0.id == 4 or user.username == 'admin' %}
+                <a href="{% url 'analisis' %}" class="block px-6 py-3 hover:bg-gray-100">
+                    Analisis
+                </a>
+            {% endif %}
+
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button
+                    type="submit"
+                    class="w-full text-left px-6 py-3 text-red-600 hover:bg-red-50 cursor-pointer">
+                    Logout
+                </button>
+            </form>
+
+        {% else %}
+
+            <a href="{% url 'inicio' %}"
+               class="block px-6 py-3 hover:bg-gray-100">
+                Inicio
+            </a>
+
+            <a href="{% url 'nueva_consulta' %}"
+               class="block px-6 py-3 hover:bg-gray-100">
+                Consultas
+            </a>
+
+            <a href="{% url 'login' %}"
+               class="block px-6 py-3 hover:bg-gray-100">
+                Iniciar Sesión
+            </a>
+
+        {% endif %}
+
+    </div>
+</nav>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const btn = document.getElementById("menu-btn");
+    const menu = document.getElementById("mobile-menu");
+
+    btn.addEventListener("click", function () {
+        menu.classList.toggle("hidden");
+    });
+});
+</script>
+
+    <main class="grow w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         {% block body %}
         {% endblock %}
     </main>
-
     <footer class="border-t border-gray-200 bg-white py-4 text-center text-xs text-gray-400">
         &copy; 2026 Plennus. Todos los derechos reservados.
     </footer>

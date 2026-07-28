@@ -1,0 +1,156 @@
+{% extends 'usuarios/base.html' %}
+{% load widget_tweaks %}
+
+{% block body %}
+
+<div class="max-w-5xl mx-auto space-y-8">
+
+    <!-- Encabezado -->
+    <div class="text-center">
+        <h1 class="text-4xl font-bold text-gray-800">
+            Carga Horaria
+        </h1>
+        <p class="text-gray-500 mt-2">
+            Registro y seguimiento de horas trabajadas.
+        </p>
+    </div>
+
+    <!-- Resumen -->
+    <div class="bg-white rounded-xl shadow border p-6">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">
+            Resumen del mes anterior
+        </h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+            <div class="bg-blue-50 rounded-lg p-4 border border-blue-100">
+                <p class="text-sm text-gray-500">Mes</p>
+                <p class="text-2xl font-bold text-blue-700">
+                    {{ mes_anterior }}
+                </p>
+            </div>
+
+            <div class="bg-green-50 rounded-lg p-4 border border-green-100">
+                <p class="text-sm text-gray-500">Horas trabajadas</p>
+                <p class="text-2xl font-bold text-green-700">
+                    {{ total_horas }} hs
+                </p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Formulario -->
+    <div class="bg-white rounded-xl shadow border p-6">
+
+        <h2 class="text-xl font-semibold mb-6">
+            Nueva carga horaria
+        </h2>
+
+        <form method="POST" class="space-y-5">
+
+            {% csrf_token %}
+
+            {% for field in form %}
+
+                <div>
+
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        {{ field.label }}
+                    </label>
+
+                    {{ field|add_class:"w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" }}
+
+                    {% if field.errors %}
+                        <p class="text-red-500 text-sm mt-1">
+                            {{ field.errors }}
+                        </p>
+                    {% endif %}
+
+                </div>
+
+            {% endfor %}
+
+            <button
+                type="submit"
+                class="w-full md:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition cursor-pointer">
+                Cargar horas
+            </button>
+
+        </form>
+
+    </div>
+
+    <!-- Historial -->
+    <div class="bg-white rounded-xl shadow border p-6">
+
+        <h2 class="text-xl font-semibold mb-6">
+            Historial de horas
+        </h2>
+
+        {% if historial_horas %}
+
+        <div class="overflow-x-auto">
+
+            <table class="min-w-full">
+
+                <thead class="bg-gray-100">
+
+                    <tr>
+                        <th class="px-4 py-3 text-left">Cantidad</th>
+                        <th class="px-4 py-3 text-left">Fecha</th>
+                        <th class="px-4 py-3 text-left">Jefe</th>
+                        <th class="px-4 py-3 text-left">Empleado</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for horas in historial_horas %}
+
+                    <tr class="border-t hover:bg-gray-50">
+
+                        <td class="px-4 py-3">
+                            {{ horas.cantidad }} hs
+                        </td>
+
+                        <td class="px-4 py-3">
+                            {{ horas.fecha|date:"d/m/Y H:i" }}
+                        </td>
+
+                        <td class="px-4 py-3">
+                            {{ horas.usuario_activo.username }}
+                        </td>
+
+                        <td class="px-4 py-3">
+                            {{ horas.empleado.last_name }}, {{ horas.empleado.first_name }}
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <div class="text-center py-8">
+
+            <p class="text-gray-500">
+                No existen cargas horarias registradas.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -22,13 +22,13 @@
 
     {% for noticia in noticias %}
 
-        <div class="w-full max-w-3xl bg-white rounded-2xl shadow-md overflow-hidden border hover:shadow-xl transition duration-300">
-
+        <div class="w-full max-w-3xl bg-white rounded-2xl shadow-md overflow-hidden  hover:shadow-xl transition duration-300">
+            
             {% if noticia.archivo %}
                 <img
                     src="{{ noticia.archivo.url }}"
                     alt="{{ noticia.titulo }}"
-                    class="w-full h-72 object-cover"
+                    class="w-full h-72 object-contain"
                 >
             {% endif %}
 

@@ -1,43 +1,76 @@
 {% extends 'usuarios/base.html' %}
-{% load widget_tweaks %} <!--Se usa para poder aplicar style a los objetos-->
+{% load widget_tweaks %}
 
 {% block body %}
 
-<div class="max-w-md mx-auto mt-10 bg-white p-6 rounded-2xl shadow">
+<div class="max-w-lg mx-auto mt-10">
 
-    <h1 class="text-2xl font-bold mb-6">
-        Editar Usuario
-    </h1>
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
 
-    <form method="POST" enctype="multipart/form-data" class="space-y-4">
-        {% csrf_token %}
+        <!-- Encabezado -->
+        <div class="bg-blue-600 px-6 py-5">
+            <h1 class="text-3xl font-bold text-white">
+                Editar Usuario
+            </h1>
+            <p class="text-blue-100 mt-1 text-sm">
+                Modifique la información del usuario.
+            </p>
+        </div>
 
-        {% for field in form %}
-            <div>
-                <label class="block mb-2 font-semibold text-amber-900">
-                    {% if field.label == 'First name'%}
-                        <p>Nombre</p>
-                    {% elif field.label == 'Last name'%}
-                        <p>Apellido</p>
-                    {%else%}
-                        {{ field.label }}
-                    {% endif %}
-                </label>
-                <div>
-                    {{ field | add_class:"border-1 p-2 rounded" }}
-                </div>    
-            </div>
-        {% endfor %}
+        <!-- Formulario -->
+        <div class="p-6">
 
-        <button
-            type="submit"
-            style="cursor:pointer"
-            class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
-        >
-            Editar
-        </button>
+            <form method="POST" enctype="multipart/form-data" class="space-y-5">
+                {% csrf_token %}
 
-    </form>
+                {% for field in form %}
+
+                    <div>
+
+                        <label class="block mb-2 font-semibold text-gray-700">
+
+                            {% if field.label == 'First name' %}
+                                Nombre
+                            {% elif field.label == 'Last name' %}
+                                Apellido
+                            {% else %}
+                                {{ field.label }}
+                            {% endif %}
+
+                        </label>
+
+                        {{ field|add_class:"w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200" }}
+
+                        {% for error in field.errors %}
+                            <p class="mt-2 text-sm text-red-500">
+                                {{ error }}
+                            </p>
+                        {% endfor %}
+
+                    </div>
+
+                {% endfor %}
+
+                <div class="flex justify-end gap-3 pt-2">
+
+                    <a href="javascript:history.back()"
+                       class="px-5 py-3 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 transition">
+                        Cancelar
+                    </a>
+
+                    <button
+                        type="submit"
+                        class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg shadow-md transition duration-300 cursor-pointer">
+                        Guardar Cambios
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
 
 </div>
 

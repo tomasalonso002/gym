@@ -10,4 +10,4 @@ class Noticias(models.Model):
     activa = models.BooleanField(default=True)
     usuario = models.ForeignKey(UsuarioPersonalizado, on_delete=models.CASCADE, related_name='noticias' )
     def __str__(self):
-        return self.titulo
+        return self.titulo or 'No hay noticias'

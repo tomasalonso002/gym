@@ -3,33 +3,51 @@
 
 {% block body %}
 
+<div class="min-h-screen flex items-center justify-center bg-gray-100 py-10 px-4">
 
-<div class="max-w-md mx-auto  bg-white p-6 rounded-2xl shadow">
-    <h1 class="text-2xl mb-6">
-        CONSULTAS
-    </h1>
+    <div class="w-full max-w-xl bg-white rounded-3xl shadow-xl overflow-hidden">
 
-    <form method="POST" class="space-y-4">
-        {% csrf_token %}
+        <!-- Encabezado -->
+        <div class="bg-blue-700 px-8 py-6">
+            <h1 class="text-3xl font-bold text-white">
+                Consultas
+            </h1>
+            <p class="text-blue-100 mt-1">
+                Envíanos tu consulta y te responderemos lo antes posible.
+            </p>
+        </div>
 
-        {% for field in form %}
-            <div>
-                <label class="block mb-2 font-semibold text-amber-900">
-                    {{ field.label }}
-                </label>    
-                <div>
-                    {{ field | add_class:"border-1 p-2 rounded" }}
-                </div>       
-            </div>
-        {% endfor %}
-        <button
-        type="submit" 
-        style="cursor: pointer;" 
-        class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">
-            Enviar
-        </button>
-    </form>
+        <!-- Formulario -->
+        <div class="p-8">
+            <form method="POST" class="space-y-6">
+                {% csrf_token %}
+
+                {% for field in form %}
+                    <div>
+                        <label class="block mb-2 text-sm font-semibold text-gray-700">
+                            {{ field.label }}
+                        </label>
+
+                        {{ field|add_class:"w-full rounded-xl border border-gray-400 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" }}
+
+                        {% if field.errors %}
+                            <p class="mt-2 text-sm text-red-600">
+                                {{ field.errors|striptags }}
+                            </p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
+                <button
+                    type="submit"
+                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-xl shadow-md transition duration-300 cursor-pointer">
+                    Enviar consulta
+                </button>
+            </form>
+        </div>
+
+    </div>
+
 </div>
-    
 
 {% endblock %}

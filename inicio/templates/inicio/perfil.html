@@ -1,38 +1,106 @@
 {% extends 'usuarios/base.html' %}
 
-
 {% block body %}
-    <div class="flex justify-between">
-        <a href="{% url 'password_change' %}" class="bg-yellow-500 text-zinc-800 px-4 py-2 rounded font-semibold"> Cambiar contraseña </a>
 
-        {% if user.groups.all.0.id == 2 %}
-        <a href="{% url 'cuotas' %}" class="bg-green-500 p-2 font-semibold cursor-pointer rounded">
-            Cuotas
-        </a>
-        {% endif %}
-    </div>
-        
-    <div class=" justify-items-center pt-3">
-        <h1 class="text-3xl font-semibold text-blue-950 mb-2">Pefil Personal</h1>
-        {% if user.foto_perfil %}
-            <img src="{{user.foto_perfil.url}}" alt="imagen {{user.foto_perfil}}" width="200px" class="rounded-full border-3 border-blue">
-        {% else %}
-            <img src="/media/users_fp/nouphoto.png" alt="" width="200px" class="rounded-full border-3 border-blue">
-        {% endif %}
-        <div class="pt-2">
-            <label>@{{user.username}}</label>
+<div class="max-w-5xl mx-auto mt-8">
+
+    <!-- Encabezado -->
+    <div class="bg-white rounded-2xl shadow-lg p-6 mb-8">
+
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+
+            <div>
+                <h1 class="text-4xl font-bold text-gray-800">
+                    Perfil Personal
+                </h1>
+                <p class="text-gray-500 mt-2">
+                    Consultá y administrá la información de tu cuenta.
+                </p>
+            </div>
+
+            <div class="flex flex-wrap gap-3">
+
+                <a href="{% url 'password_change' %}"
+                   class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold px-5 py-3 rounded-lg shadow transition">
+                    Cambiar Contraseña
+                </a>
+
+                {% if user.groups.all.0.id == 2 %}
+                    <a href="{% url 'cuotas' %}"
+                       class="bg-green-600 hover:bg-green-700 text-white font-semibold px-5 py-3 rounded-lg shadow transition">
+                        Mis Cuotas
+                    </a>
+                {% endif %}
+
+            </div>
+
         </div>
-        <div class=" border-black p-2 capitalize h-40 w-70 justify-items-center">    
-            <p class="font-semibold ">Nombre</p>
-            <p>{{user.first_name}}</p>
-            <p class="font-semibold">Apellido</p>
-            <p>{{user.last_name}}</p>
-            <p class="font-semibold">Gmail</p>
-            <p>{{user.email}}</p>
-            <p class="font-semibold">DNI</p>
-            <p>{{user.dni}}</p>
-            <p class="font-semibold">Rol</p>
-            <p>{{ user.groups.all.0}}</p>
+
     </div>
+
+    <!-- Perfil -->
+    <div class="bg-white rounded-2xl shadow-lg p-8">
+
+        <div class="flex flex-col items-center">
+
+            {% if user.foto_perfil %}
+                <img
+                    src="{{ user.foto_perfil.url }}"
+                    alt="{{ user.username }}"
+                    class="w-48 h-48 rounded-full object-cover border-4 border-blue-600 shadow-md"
+                >
+            {% else %}
+                <img
+                    src="/media/users_fp/nouphoto.png"
+                    alt="Sin foto"
+                    class="w-48 h-48 rounded-full object-cover border-4 border-blue-600 shadow-md"
+                >
+            {% endif %}
+
+            <h2 class="text-2xl font-bold text-gray-800 mt-5">
+                @{{ user.username }}
+            </h2>
+
+            <span class="mt-2 bg-blue-100 text-blue-700 px-4 py-1 rounded-full font-semibold">
+                {{ user.groups.all.0 }}
+            </span>
+
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6 mt-10">
+
+            <div class="bg-gray-50 rounded-xl p-5">
+                <p class="text-sm text-gray-500">Nombre</p>
+                <p class="text-lg font-semibold text-gray-800">
+                    {{ user.first_name }}
+                </p>
+            </div>
+
+            <div class="bg-gray-50 rounded-xl p-5">
+                <p class="text-sm text-gray-500">Apellido</p>
+                <p class="text-lg font-semibold text-gray-800">
+                    {{ user.last_name }}
+                </p>
+            </div>
+
+            <div class="bg-gray-50 rounded-xl p-5">
+                <p class="text-sm text-gray-500">Correo electrónico</p>
+                <p class="text-lg font-semibold text-gray-800 break-all">
+                    {{ user.email }}
+                </p>
+            </div>
+
+            <div class="bg-gray-50 rounded-xl p-5">
+                <p class="text-sm text-gray-500">DNI</p>
+                <p class="text-lg font-semibold text-gray-800">
+                    {{ user.dni }}
+                </p>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
 
 {% endblock %}

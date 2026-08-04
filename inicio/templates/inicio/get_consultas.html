@@ -1,38 +1,99 @@
 {% extends 'usuarios/base.html' %}
-{% load widget_tweaks %} <!--Se usa para poder aplicar style a los objetos-->
+{% load widget_tweaks %}
 
 {% block body %}
-<div class="flex flex-col items-center pt-3">
-    <h1 class="text-3xl text-green-900 ">Consultas</h1>
-    <table class="border-collapse border border-black mx-auto mt-10 p-6">
-        <thead>
-            <tr>
-                <th class="border border-black p-2">Nombre</th>
-                <th class="border border-black p-2">Titulo del Contenido</th>
-                <th class="border border-black p-2">Contenido</th>
-                <th class="border border-black p-2">Email</th>
-                <th class="border border-black p-2">Telefono</th>
-                <th class="border border-black p-2">Accion</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for consulta in consultas %}
-            <tr>
-                <td  class="border border-black p-2">{{consulta.nombre}}</td>
-                <td  class="border border-black p-2">{{consulta.titulo_contenido}}</td>
-                <td  class="border border-black p-2">{{consulta.contenido}}</td>
-                <td  class="border border-black p-2">{{consulta.gmail}}</td>
-                <td  class="border border-black p-2">{{consulta.telefono}}</td>
-                <td class="border border-black p-2">
-                    <form action="{% url 'borrar_consulta' consulta.id %}" method="post">
-                        {% csrf_token %}
-                        <button  class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded cursor-pointer">Borrar</button>
-                    </form>
-                </td>
-            </tr>
-        </tbody>
-        {% endfor %}
-    </table>
+
+<div class="bg-white rounded-2xl shadow-lg p-6 mb-8">
+
+    <!-- Encabezado -->
+    <div>
+        <h1 class="text-4xl font-bold text-gray-800">
+            Consultas
+        </h1>
+        <p class="text-gray-500 mt-1">
+            Consultas enviadas por los usuarios desde el sitio web.
+        </p>
+    </div>
+
 </div>
-    
+
+<div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+
+    <!-- Título de la tabla -->
+    <div class="bg-blue-600 px-6 py-4">
+        <h2 class="text-2xl font-bold text-white">
+            Lista de Consultas
+        </h2>
+    </div>
+
+    <div class="overflow-x-auto">
+
+        <table class="min-w-full">
+
+            <thead class="bg-gray-100">
+                <tr class="text-gray-700 uppercase text-sm">
+                    <th class="px-4 py-3 text-left">Nombre</th>
+                    <th class="px-4 py-3 text-left">Título</th>
+                    <th class="px-4 py-3 text-left">Consulta</th>
+                    <th class="px-4 py-3 text-left">Email</th>
+                    <th class="px-4 py-3 text-left">Teléfono</th>
+                    <th class="px-4 py-3 text-center">Acción</th>
+                </tr>
+            </thead>
+
+            <tbody class="divide-y divide-gray-200">
+
+                {% for consulta in consultas %}
+
+                <tr class="hover:bg-gray-50 transition">
+
+                    <td class="px-4 py-4 font-medium text-gray-800">
+                        {{ consulta.nombre }}
+                    </td>
+
+                    <td class="px-4 py-4">
+                        {{ consulta.titulo_contenido }}
+                    </td>
+
+                    <td class="px-4 py-4 max-w-md">
+                        <p class="line-clamp-3 break-words">
+                            {{ consulta.contenido }}
+                        </p>
+                    </td>
+
+                    <td class="px-4 py-4">
+                        {{ consulta.gmail }}
+                    </td>
+
+                    <td class="px-4 py-4">
+                        {{ consulta.telefono }}
+                    </td>
+
+                    <td class="px-4 py-4 text-center">
+
+                        <form action="{% url 'borrar_consulta' consulta.id %}" method="post">
+                            {% csrf_token %}
+
+                            <button
+                                type="submit"
+                                class="bg-red-600 hover:bg-red-700 text-white font-semibold px-4 py-2 rounded-lg shadow transition cursor-pointer">
+                                Borrar
+                            </button>
+
+                        </form>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
 {% endblock %}

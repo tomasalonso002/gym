@@ -2,95 +2,205 @@
 {% load widget_tweaks %} <!--Se usa para poder aplicar style a los objetos-->
 
 {% block body %}
-<h1 class="text-4xl font-semibold text-center" >USUARIOS</h1>
+<div class="bg-white rounded-2xl shadow-lg p-6 mb-8">
 
-<div class="pt-6 flex justify-between ">
-    {% if user.groups.all.0.id == 4 or user.username == 'admin' %}
-    <a href="{% url 'nuevo_usuario' %}" class="text-zinc-900/90 bg-yellow-500 hover:bg-yellow-400 p-2 rounded border font-semibold">
-        Añadir Usuario
-    </a>
-    
-    <a href="{% url 'pagos_pendientes' %}" class="text-zinc-900/90 bg-red-500 hover:bg-red-400 p-2 rounded border font-semibold">
-        Pagos pendientes
-    </a>
-    
-    <a href="{% url 'nuevo_plan' %}" class="text-zinc-900/90 bg-green-500 hover:bg-green-400 p-2 rounded border font-semibold">
-        Nuevo Plan
-    </a>
-    {%endif%}
-</div>
+    <!-- Encabezado -->
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
 
-<div class="items-center pt-5">
-    <form method="GET">
-        <input type="text" name="q" class="border p-1 rounded w-100" placeholder="Nombre de usuario">
-        <button type="submit" class="p-2 bg-blue-600 font-semibold rounded text-zinc-100 hover:bg-blue-800 cursor-pointer" >Buscar</button>
-        <a href="{% url 'get_usuarios' %}" class=" p-2 bg-green-600 font-semibold rounded text-zinc-100 hover:bg-green-800 cursor-pointer h-100">Limpiar</a>
-    </form>
-</div>
+        <div>
+            <h1 class="text-4xl font-bold text-gray-800">
+                Usuarios
+            </h1>
+            <p class="text-gray-500 mt-1">
+                Administración de usuarios del gimnasio.
+            </p>
+        </div>
 
-<table class="border-collapse border border-black mx-auto mt-10 p-6">
-    <thead>
-        <tr>
-            <th class="border border-black p-2">Username</th>
-            <th class="border border-black p-2">Nombre</th>
-            <th class="border border-black p-2">Apellido</th>
-            <th class="border border-black p-2">DNI</th>
-            <th class="border border-black p-2">Email</th>
-            <th class="border border-black p-2">Telefono</th>
-            <th class="border border-black p-2">Foto</th>
-            <th class="border border-black p-2"> + Rutina</th>
-            {% if user.groups.all.0.id == 4 or user.username == 'admin' %}
-                <th class="border border-black p-2">Acciones</th>
-                <th class="border border-black p-2">Pagar cuota</th>
-            {% endif%}
-        </tr>
-    </thead>
-<tbody>
-    {% for usuario in usuarios %}
-    <tr>
-        <td class="border border-black p-2">{{usuario.username}}</td>
-        <td class="border border-black p-2">{{usuario.first_name}}</td>
-        <td class="border border-black p-2">{{usuario.last_name}}</td>
-        <td class="border border-black p-2">{{usuario.dni}}</td>
-        <td class="border border-black p-2">{{usuario.email}}</td>
-        <td class="border border-black p-2">{{usuario.telefono}}</td>
-        <td class="border border-black p-2">
-            {% if usuario.foto_perfil %}
-                <img src="{{usuario.foto_perfil.url}}" alt="imagen {{usuario.foto_perfil}}" width="100">
-            {% else %}
-                Sin foto
-            {% endif %}
-        </td>
-        <td class="border border-black p-2 min-w-31">
-            <a href="{% url 'crear_rutina_personalizada' usuario.id %}" class="p-2 bg-green-500 rounded text-white hover:bg-green-700 cursor-pointer ">
-                Crear Rutina
-            </a>
-        </td>
         {% if user.groups.all.0.id == 4 or user.username == 'admin' %}
-            <td class="border border-black p-2" >
-                <div class="flex gap-2">
-                    <a href="{% url 'editar_usuario' usuario.id %}" class="p-2 bg-blue-500 rounded text-white hover:bg-blue-700"
-                    >
-                        Editar
-                    </a>
+        <div class="flex flex-wrap gap-3">
 
-                    <a href="{% url 'borrar_usuario' usuario.id %}" class="p-2 bg-red-500 rounded text-white hover:bg-red-700">
-                        Borrar
-                    </a>
-                </div>
-            </td>
-            <td class="border border-black p-2 min-w-31">
-                {% if usuario.cuota_actual %}
-                <a href="{% url 'detalle_pago_cuota' usuario.id %}" class="p-2 bg-green-500 rounded text-white hover:bg-green-700 cursor-pointer ">
-                    Pagar cuota
-                </a>
-                {% else %}
-                    Sin Cuota
-                {% endif %}
-            </td>
+            <a href="{% url 'nuevo_usuario' %}"
+               class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold px-4 py-2 rounded-lg shadow transition">
+                + Añadir Usuario
+            </a>
+
+            <a href="{% url 'pagos_pendientes' %}"
+               class="bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded-lg shadow transition">
+                Pagos Pendientes
+            </a>
+
+            <a href="{% url 'nuevo_plan' %}"
+               class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded-lg shadow transition">
+                Nuevo Plan
+            </a>
+
+        </div>
         {% endif %}
-    </tr>
-    {% endfor %}
-</tbody>
-</table>
+
+    </div>
+
+    <!-- Buscador -->
+    <div class="mt-6 border-t pt-6">
+
+        <form method="GET" class="flex flex-col sm:flex-row gap-3">
+
+            <input
+                type="text"
+                name="q"
+                placeholder="Buscar por nombre de usuario..."
+                class="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            >
+
+            <button
+                type="submit"
+                class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg shadow transition cursor-pointer">
+                Buscar
+            </button>
+
+            <a href="{% url 'get_usuarios' %}"
+               class="bg-gray-600 hover:bg-gray-700 text-white font-semibold px-6 py-2 rounded-lg shadow transition text-center">
+                Limpiar
+            </a>
+
+        </form>
+
+    </div>
+
+</div>
+
+<div class="bg-white rounded-2xl shadow-lg overflow-hidden mt-8">
+
+    <div class="bg-blue-600 px-6 py-4">
+        <h2 class="text-2xl font-bold text-white">
+            Lista de Usuarios
+        </h2>
+    </div>
+
+    <div class="overflow-x-auto">
+
+        <table class="min-w-full">
+
+            <thead class="bg-gray-100">
+                <tr class="text-gray-700 text-sm uppercase">
+
+                    <th class="px-4 py-3 text-left">Usuario</th>
+                    <th class="px-4 py-3 text-left">Nombre</th>
+                    <th class="px-4 py-3 text-left">Apellido</th>
+                    <th class="px-4 py-3 text-left">DNI</th>
+                    <th class="px-4 py-3 text-left">Email</th>
+                    <th class="px-4 py-3 text-left">Teléfono</th>
+                    <th class="px-4 py-3 text-center">Foto</th>
+                    <th class="px-4 py-3 text-center">Rutina</th>
+
+                    {% if user.groups.all.0.id == 4 or user.username == 'admin' %}
+                        <th class="px-4 py-3 text-center">Acciones</th>
+                        <th class="px-4 py-3 text-center">Cuota</th>
+                    {% endif %}
+
+                </tr>
+            </thead>
+
+            <tbody class="divide-y divide-gray-200">
+
+                {% for usuario in usuarios %}
+
+                <tr class="hover:bg-gray-50 transition">
+
+                    <td class="px-4 py-4 font-medium text-gray-800">
+                        {{ usuario.username }}
+                    </td>
+
+                    <td class="px-4 py-4">
+                        {{ usuario.first_name }}
+                    </td>
+
+                    <td class="px-4 py-4">
+                        {{ usuario.last_name }}
+                    </td>
+
+                    <td class="px-4 py-4">
+                        {{ usuario.dni }}
+                    </td>
+
+                    <td class="px-4 py-4">
+                        {{ usuario.email }}
+                    </td>
+
+                    <td class="px-4 py-4">
+                        {{ usuario.telefono }}
+                    </td>
+
+                    <td class="px-4 py-4 text-center">
+                        {% if usuario.foto_perfil %}
+                            <img
+                                src="{{ usuario.foto_perfil.url }}"
+                                alt="{{ usuario.username }}"
+                                class="w-16 h-16 rounded-full object-cover border-2 border-gray-300 mx-auto"
+                            >
+                        {% else %}
+                            <span class="text-gray-500 text-sm">
+                                Sin foto
+                            </span>
+                        {% endif %}
+                    </td>
+
+                    <td class="px-4 py-4 text-center">
+                        <a href="{% url 'crear_rutina_personalizada' usuario.id %}"
+                           class="inline-block bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded-lg shadow transition">
+                            Crear Rutina
+                        </a>
+                    </td>
+
+                    {% if user.groups.all.0.id == 4 or user.username == 'admin' %}
+
+                    <td class="px-4 py-4">
+
+                        <div class="flex justify-center gap-2">
+
+                            <a href="{% url 'editar_usuario' usuario.id %}"
+                               class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow transition">
+                                Editar
+                            </a>
+
+                            <a href="{% url 'borrar_usuario' usuario.id %}"
+                               class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg shadow transition">
+                                Borrar
+                            </a>
+
+                        </div>
+
+                    </td>
+
+                    <td class="px-4 py-4 text-center">
+
+                        {% if usuario.cuota_actual %}
+
+                            <a href="{% url 'detalle_pago_cuota' usuario.id %}"
+                               class="inline-block bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded-lg shadow transition">
+                                Pagar Cuota
+                            </a>
+
+                        {% else %}
+
+                            <span class="text-gray-500">
+                                Sin cuota
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+                    {% endif %}
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
 {% endblock %}

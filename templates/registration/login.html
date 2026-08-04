@@ -1,37 +1,90 @@
 {% extends 'usuarios/base.html' %}
 {% load widget_tweaks %}
 
-{%block body%}
-<div class="max-w-md mx-auto mt-10 bg-white p-6 rounded-2xl shadow border h-100 text-center">
-    <p class="text-2xl font-bold mb-6">Iniciar sesión</p>
-    <form method="post" class="space-y-4">
-        {% csrf_token %}
-        
-        {% for field in form %}
-            <div>
-                <label class="block mb-2 font-semibold text-amber-900">
-                    {% if field.label == 'Username'%}
-                        <p>Nombre</p>
-                    {%else%}
-                        <p>Contraseña</p>
-                    {% endif %}
-                </label>
-                
-                <p>{{field | add_class:"border-1 p-2 rounded "}}</p>
+{% block body %}
+
+<div class="max-w-lg mx-auto mt-10">
+
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+
+        <!-- Encabezado -->
+        <div class="bg-blue-600 px-6 py-6 text-center">
+
+            <h1 class="text-3xl font-bold text-white">
+                Iniciar Sesión
+            </h1>
+
+            <p class="text-blue-100 mt-2 text-sm">
+                Accedé a tu cuenta de Plennus.
+            </p>
+
+        </div>
+
+
+        <!-- Formulario -->
+        <div class="p-8">
+
+            <form method="post" class="space-y-5">
+
+                {% csrf_token %}
+
+                {% for field in form %}
+
+                    <div>
+
+                        <label class="block mb-2 font-semibold text-gray-700">
+
+                            {% if field.label == 'Username' %}
+                                Usuario
+                            {% else %}
+                                Contraseña
+                            {% endif %}
+
+                        </label>
+
+
+                        {{ field|add_class:"w-full rounded-lg border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" }}
+
+
+                        {% for error in field.errors %}
+                            <p class="text-red-500 text-sm mt-2">
+                                {{ error }}
+                            </p>
+                        {% endfor %}
+
+                    </div>
+
+                {% endfor %}
+
+
+                <button
+                    type="submit"
+                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg shadow-md transition duration-300 cursor-pointer">
+
+                    Ingresar
+
+                </button>
+
+
+            </form>
+
+
+            <div class="mt-6 text-center">
+
+                <a href="{% url 'password_reset' %}"
+                   class="text-red-600 hover:text-red-700 font-semibold transition">
+
+                    ¿Olvidaste tu contraseña?
+
+                </a>
 
             </div>
-        {% endfor %}
-        
-        <button 
-        type="submit"
-        style="cursor:pointer"
-        class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"> 
-        Ingresar</button>
-    </form>
-    <div class="pt-4 hover:font-bold">
-        <a class="text-red-600" href="{% url 'password_reset' %}">
-            Olvide mi Contraseña
-        </a>
+
+
+        </div>
+
     </div>
+
 </div>
-    {%endblock%}
+
+{% endblock %}

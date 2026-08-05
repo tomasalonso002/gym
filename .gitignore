@@ -3,6 +3,7 @@ db.sqlite3
 
 # Variables de entorno
 .env
+.env.production
 
 # Archivos subidos
 media/

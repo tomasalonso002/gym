@@ -1,2 +1,18 @@
+# Base de datos
+db.sqlite3
+
+# Variables de entorno
+.env
+
+# Archivos subidos
+media/
+
+# Entorno virtual
 venv/
+
+# Python
 __pycache__/
+*.pyc
+
+# Archivos estáticos generados
+staticfiles/

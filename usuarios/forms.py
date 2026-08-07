@@ -7,6 +7,14 @@ class UsuarioPersonalizadoForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = UsuarioPersonalizado
         fields = UserCreationForm.Meta.fields + ('first_name', 'last_name', 'plan','telefono', 'dni', 'email', 'foto_perfil')
+
+    def clean_plan(self):
+        plan = self.cleaned_data.get("plan")
+        if plan is None:
+            raise forms.ValidationError('Debe seleccionar un plan.')
+        return plan
+
+
 class EditarUsuarioPersonalizadoForm(forms.ModelForm):
     class Meta:
         model = UsuarioPersonalizado
